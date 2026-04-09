@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STÉPHANE BERGER // ARCHIVE VISUELLE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Monoton&family=Playfair+Display:ital,wght@0,900;1,900&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;900&display=swap');
+
+        :root {
+            --accent: #ff00ff;
+            --bg: #f8f8f8;
+            --text: #0a0a0a;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            transition: background 0.5s ease, filter 0.3s ease;
+        }
+
+        /* L'effet du Titre (Conservé) */
+        .header-title {
+            font-family: 'Monoton', cursive;
+            font-size: clamp(3.5rem, 12vw, 8rem);
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+            animation: neon-flicker 3s infinite alternate;
+            line-height: 0.9;
+            letter-spacing: -2px;
+        }
+
+        @keyframes neon-flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                color: #440044;
+            }
+        }
+
+        /* Design Brutaliste */
+        .brutal-border {
+            border: 3px solid var(--text);
+            box-shadow: 8px 8px 0px var(--text);
+            transition: all 0.2s ease;
+        }
+
+        .brutal-border:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 12px 12px 0px var(--accent);
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .serif { font-family: 'Playfair Display', serif; }
+
+        .image-reveal {
+            position: relative;
+            overflow: hidden;
+            background: var(--text);
+        }
+
+        .image-reveal img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            opacity: 0.9;
+        }
+
+        .image-reveal:hover img {
+            transform: scale(1.05) rotate(1deg);
+            opacity: 1;
+        }
+
+        /* Curseur personnalisé */
+        #custom-cursor {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        /* Animations Glitch & Absurde */
+        .glitch-text:hover { animation: glitch 0.3s infinite; }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 2px); color: var(--accent); }
+            40% { transform: translate(3px, -2px); color: cyan; }
+            100% { transform: translate(0); }
+        }
+
+        .marquee-container {
+            background: var(--text);
+            color: var(--bg);
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            border-top: 2px solid var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.5;
+            z-index: -1;
+            font-weight: 900;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border: 2px solid black;
+            font-family: 'JetBrains Mono';
+        }
+
+        /* Effet Brouillard */
+        .fog-mode {
+            filter: blur(8px) grayscale(1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="custom-cursor"></div>
+
+    <!-- Éléments flottants décoratifs -->
+    <div class="floating-element text-pink-200" style="top: 15%; left: 5%; font-size: 8rem;">?</div>
+    <div class="floating-element text-gray-200" style="top: 60%; right: 10%; font-size: 12rem;">&</div>
+
+    <!-- Header flottant -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1] opacity-5 overflow-hidden">
+        <div class="absolute top-0 left-0 text-[20vw] font-black leading-none select-none serif italic uppercase translate-x-[-10%] translate-y-[-10%]">
+            Absurde
+        </div>
+    </div>
+
+    <nav class="p-6 flex justify-between items-center border-b-2 border-black sticky top-0 bg-[#f8f8f8] z-[100]">
+        <div class="mono font-bold text-sm tracking-tighter uppercase">
+            SB_UNIT_2026 // <span id="clock">00:00:00</span>
+        </div>
+        <div class="flex gap-8 text-xs font-black uppercase tracking-widest">
+            <a href="#manifeste" class="hover:text-pink-500 transition-colors">Manifeste</a>
+            <a href="#archives" class="hover:text-pink-500 transition-colors">Légendes</a>
+            <a href="#lab" class="hover:text-pink-500 transition-colors">Le_Lab</a>
+            <button onclick="toggleTheme()" class="bg-black text-white px-2 py-1">Mode_Nuit</button>
+        </div>
+    </nav>
+
+    <header class="py-20 px-6 flex flex-col items-center justify-center min-h-[70vh] text-center">
+        <div class="relative inline-block">
+            <h1 class="header-title">STÉPHANE</h1>
+            <h1 class="header-title mt-[-1rem]">BERGER</h1>
+            <div class="absolute -bottom-6 right-0 bg-black text-white px-4 py-2 font-black italic transform rotate-2">
+                PROTOCOLE : RARE
+            </div>
+        </div>
+        <p class="mt-12 mono text-xs uppercase tracking-widest opacity-50">Dernière mise à jour : Il y a 4 secondes ou 3 siècles</p>
+    </header>
+
+    <!-- Bandeau défilant absurde -->
+    <div class="marquee-container mb-20">
+        <div class="marquee-content mono font-bold text-sm uppercase">
+            ⚡ ALERTE : STÉPHANE A RÉUSSI À CONVAINCRE UN GLACON DE NE PAS FONDRE --- LA TEMPÉRATURE DU CAFÉ EST MAINTENANT MESURÉE EN DÉCIBELS --- LES CHIENS PARLENT ANGLAIS MAIS UNIQUEMENT LE DIMANCHE SOIR --- N'OUBLIEZ PAS DE NOURRIR VOTRE ROUTEUR WI-FI --- ⚡
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-6 pb-40">
+        
+        <!-- Grid Layout Modern -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-40" id="manifeste">
+            
+            <div class="lg:col-span-5">
+                <div class="image-reveal brutal-border">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg1Gj6Kfc7FdnfBvl5WC32xM9Fq7KPqf9BnZBZvBZLoRAmJj80wG1HWpIk3zEjl0KUqUNpn24Lbrg6vLlr4UsZLI_TkCocSTRn64nCh11Jw57n5EzN1i0CyHJZLelxYflSBEBG2DO9NAXFBOoZhiW6NCzuHoy0buCHao2Fpsei4a8lGTs7mL8oGUO-kcHo/s1600/unnamed.jpg" 
+                         alt="Stéphane Berger" 
+                         class="w-full grayscale hover:grayscale-0"
+                         id="portrait">
+                </div>
+                <!-- Stat Card Absurde -->
+                <div class="mt-8 stat-box brutal-border">
+                    <h3 class="font-black border-b-2 border-black mb-4 pb-2 uppercase">Données Biométriques</h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between"><span>Niveau d'absurdité :</span><span class="text-pink-600 font-bold">127% (CRITIQUE)</span></div>
+                        <div class="flex justify-between"><span>Vitesse de clignement :</span><span>0.0004 Hz</span></div>
+                        <div class="flex justify-between"><span>Résistance au fromage :</span><span>Infinie</span></div>
+                        <div class="flex justify-between"><span>Poids de l'âme :</span><span>12 grammes de néon</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-12">
+                <h2 class="serif text-6xl lg:text-8xl italic font-black leading-tight text-right lg:text-left">
+                    "Le silence <span class="text-pink-500">électrique</span> d'un grille-pain."
+                </h2>
+                
+                <div class="p-8 bg-black text-white brutal-border relative">
+                    <div class="absolute -top-4 -right-4 bg-pink-500 text-white p-2 text-[10px] font-bold">TOP SECRET</div>
+                    <p class="mono text-lg leading-relaxed">
+                        > INITIALISATION DU MANIFESTE...<br><br>
+                        Stéphane Berger est le seul homme capable de faire une sieste tout en courant un marathon dans le sens inverse de la rotation de la Terre. Son but ? Remonter le temps pour ne jamais avoir à finir cette phrase.
+                    </p>
+                </div>
+
+                <!-- Pensée aléatoire interactive -->
+                <div class="p-6 border-2 border-dotted border-black bg-yellow-50">
+                    <h3 class="mono font-bold text-xs uppercase mb-2">● Générateur de Pensée de Stéphane</h3>
+                    <p id="quote-box" class="serif italic text-xl">"Et si les fourchettes étaient des peignes pour spaghettis ?"</p>
+                    <button onclick="generateQuote()" class="mt-4 bg-black text-white px-4 py-1 text-xs mono uppercase hover:bg-pink-500 transition-colors">Penser_Encore</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-black text-xl uppercase mb-4 border-b-4 border-pink-500 inline-block">Spécifications</h3>
+                        <ul class="space-y-4 mono text-sm">
+                            <li class="glitch-text cursor-crosshair">● Capable de pleurer en braille</li>
+                            <li class="glitch-text cursor-crosshair">● Maîtrise le saut en hauteur sous l'eau</li>
+                            <li class="glitch-text cursor-crosshair">● N'utilise que des stylos sans encre</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-xl uppercase mb-4 border-b-4 border-black inline-block">Projets_En_Cours</h3>
+                        <ul class="space-y-4 mono text-sm">
+                            <li>- Compter tous les grains de sable (9% terminé)</li>
+                            <li>- Traduire le silence en japonais</li>
+                            <li>- Apprendre le piano à un brocoli</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Le Lab (Interactivité Absurde) -->
+        <div id="lab" class="mb-40">
+            <h2 class="serif text-5xl font-black mb-8">LE_LABORATOIRE.EXE</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <button onclick="triggerFog()" class="p-6 brutal-border bg-white hover:bg-blue-100 text-center mono font-bold">
+                    [ ACTIVER_BROUILLARD ]
+                </button>
+                <button onclick="shakeScreen()" class="p-6 brutal-border bg-white hover:bg-yellow-100 text-center mono font-bold">
+                    [ SÉISME_DE_PIXELS ]
+                </button>
+                <button onclick="spawnEmoji()" class="p-6 brutal-border bg-white hover:bg-pink-100 text-center mono font-bold">
+                    [ GÉNÉRER_ABSURDITÉ ]
+                </button>
+            </div>
+        </div>
+
+        <!-- Section Témoignages -->
+        <div id="archives">
+            <h2 class="serif text-5xl font-black mb-16 border-l-8 border-black pl-8 uppercase">Archives_Légendes.doc</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
+                <div class="p-10 border-2 border-black -ml-[2px] -mt-[2px] hover:bg-black hover:text-white transition-all group">
+                    <p class="serif italic text-2xl mb-6">"Il a déjà battu un four micro-ondes au jeu du premier qui cligne des yeux."</p>
+                    <p class="mono text-xs opacity-60 group-hover:text-pink-500 uppercase">La Cuisine Centrale</p>
+                </div>
+
+                <div class="p-10 border-2 border-black -ml-[2px] -mt-[2px] hover:bg-pink-500 transition-all group">
+                    <p class="serif italic text-2xl mb-6">"Stéphane peut diviser par zéro, mais il préfère ne pas le faire pour ne pas froisser les mathématiques."</p>
+                    <p class="mono text-xs opacity-60 uppercase">Institut Henri Poincaré</p>
+                </div>
+
+                <div class="p-10 border-2 border-black -ml-[2px] -mt-[2px] hover:bg-black hover:text-white transition-all group">
+                    <p class="serif italic text-2xl mb-6">"Il m'a demandé l'heure, je lui ai donné un caillou. Il a dit 'Ah, on est déjà en automne ?'"</p>
+                    <p class="mono text-xs opacity-60 group-hover:text-pink-500 uppercase">J.P. Caillou</p>
+                </div>
+
+                <div class="p-10 border-2 border-black -ml-[2px] -mt-[2px] hover:bg-black hover:text-white transition-all group">
+                    <p class="serif italic text-2xl mb-6">"Une fois, il a fait une partie de Monopoly seul. Il a quand même réussi à perdre contre lui-même."</p>
+                    <p class="mono text-xs opacity-60 group-hover:text-pink-500 uppercase">Hasbro Dept</p>
+                </div>
+
+                <div class="p-10 border-2 border-black -ml-[2px] -mt-[2px] hover:bg-white hover:text-black transition-all group">
+                    <p class="serif italic text-2xl mb-6">"Il possède une télécommande qui ne change pas les chaînes, mais l'humeur de son poisson rouge."</p>
+                    <p class="mono text-xs opacity-60 uppercase">Aquarium National</p>
+                </div>
+
+                <div class="p-10 border-2 border-black -ml-[2px] -mt-[2px] hover:bg-black hover:text-white transition-all group">
+                    <p class="serif italic text-2xl mb-6">"Il a tenté de cloner son chat. Il a maintenant 40 chats en papier qui ne mangent que du scotch."</p>
+                    <p class="mono text-xs opacity-60 group-hover:text-pink-500 uppercase">Archive Veto</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-black text-white py-20 px-6 overflow-hidden relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-10">
+            <div>
+                <h2 class="header-title text-4xl mb-4">STÉPHANE</h2>
+                <p class="mono text-xs opacity-40">TOUT DROIT RÉSERVÉ SUR LES PÉPINES DE RAISIN.<br>CONSTRUIT EN 1984, RÉINVENTÉ EN 2026.</p>
+            </div>
+            <div class="text-right">
+                <div class="serif italic text-6xl mb-4">L'Absurde est<br>un luxe.</div>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-white text-black px-6 py-3 mono font-black text-xs hover:bg-pink-500 hover:text-white transition-colors">RETOURNER_AU_DÉBUT</button>
+            </div>
+        </div>
+        <!-- Déco footer -->
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-transparent to-pink-500"></div>
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        });
+
+        // Clock logic
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + 
+                            now.getMinutes().toString().padStart(2, '0') + ":" + 
+                            now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            if (body.style.getPropertyValue('--bg') === '#0a0a0a') {
+                body.style.setProperty('--bg', '#f8f8f8');
+                body.style.setProperty('--text', '#0a0a0a');
+                body.style.backgroundColor = '#f8f8f8';
+                body.style.color = '#0a0a0a';
+            } else {
+                body.style.setProperty('--bg', '#0a0a0a');
+                body.style.setProperty('--text', '#f8f8f8');
+                body.style.backgroundColor = '#0a0a0a';
+                body.style.color = '#f8f8f8';
+            }
+        }
+
+        // Quotes Generator
+        const quotes = [
+            "Et si les fourchettes étaient des peignes pour spaghettis ?",
+            "Le Wi-Fi est juste un fantôme qui transporte des lettres.",
+            "Si je cours assez vite, je peux doubler mon ombre.",
+            "Le fromage est du lait qui a décidé de devenir solide par pure paresse.",
+            "Les miroirs sont des fenêtres sur une dimension où tout le monde est gaucher.",
+            "Pourquoi appelle-t-on ça un 'clavier' alors qu'il n'y a pas de serrure ?",
+            "Les poissons ne savent pas qu'ils sont mouillés."
+        ];
+        function generateQuote() {
+            const box = document.getElementById('quote-box');
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+                box.style.opacity = 1;
+            }, 200);
+        }
+
+        // Lab Actions
+        function triggerFog() {
+            document.body.classList.toggle('fog-mode');
+        }
+
+        function shakeScreen() {
+            document.body.style.animation = "shake 0.5s ease";
+            setTimeout(() => document.body.style.animation = "", 500);
+        }
+
+        function spawnEmoji() {
+            const emojis = ['🧀', '⚡', '🤖', '👟', '🎹', '🥦', '🐱'];
+            const e = document.createElement('div');
+            e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.position = 'fixed';
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.top = '-50px';
+            e.style.fontSize = '3rem';
+            e.style.zIndex = '1000';
+            e.style.transition = 'top 2s linear';
+            document.body.appendChild(e);
+            setTimeout(() => {
+                e.style.top = '110vh';
+                setTimeout(() => e.remove(), 2000);
+            }, 100);
+        }
+
+        // Shake Animation CSS
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes shake {
+                0% { transform: translate(1px, 1px) rotate(0deg); }
+                10% { transform: translate(-1px, -2px) rotate(-1deg); }
+                30% { transform: translate(3px, 2px) rotate(0deg); }
+                50% { transform: translate(-1px, 2px) rotate(1deg); }
+                70% { transform: translate(3px, 1px) rotate(-1deg); }
+                100% { transform: translate(1px, -2px) rotate(-1deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
